@@ -3,7 +3,7 @@ package LinkedList;
 public class SinglyLinkedList {
     SLLNode head;
 
-    private SLLNode insert(int data) {
+    SLLNode insert(int data) {
         if (head == null) {
             head = new SLLNode(data);
             return head;
@@ -22,7 +22,7 @@ public class SinglyLinkedList {
         return node;
     }
 
-    private void printSLL() {
+    void printSLL() {
         SLLNode node = head;
         while (node != null) {
             if (node.next == null) {
@@ -36,6 +36,12 @@ public class SinglyLinkedList {
     }
 
     public static void createSLL(SinglyLinkedList list1, int[] nodes) {
+        for (int data : nodes) {
+            list1.head = list1.insert(data);
+        }
+    }
+
+    public static void createSLL(PalindromeLL list1, int[] nodes) {
         for (int data : nodes) {
             list1.head = list1.insert(data);
         }
@@ -136,11 +142,37 @@ public class SinglyLinkedList {
         System.out.println("Reversed Singly Linkedlist1");
         list1.printSLL();
 
+        recursiveReverseLinkedlist(list1);
+
+        System.out.println("Recursive Reversed Singly Linkedlist1");
+        list1.printSLL();
+
         SinglyLinkedList list3 = new SinglyLinkedList();
         long number = 654453257878578425L;
         representNumber(list3, number);
         System.out.println("Number in Singly Linkedlist");
         list3.printSLL();
+    }
+
+    private static void recursiveReverseLinkedlist(SinglyLinkedList list1) {
+        SLLNode node = list1.head;
+        reverse(node, list1);
+    }
+
+    private static SLLNode reverse(SLLNode node, SinglyLinkedList list) {
+        if(node == null) {
+            return null;
+        }
+
+        SLLNode tmp = reverse(node.next, list);
+        if(node.next == null) {
+            list.head = node;
+        }
+        if(tmp!=null) {
+            tmp.next = node;
+            node.next = null;
+        }
+        return node;
     }
 
     private SLLNode getNode(int n) {
