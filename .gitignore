@@ -1,0 +1,5 @@
+.idea
+oracle-test/target/
+.idea/*
+oracle-test/oracle-test.iml
+out
