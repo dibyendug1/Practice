@@ -1,5 +1,9 @@
 .idea
 oracle-test/target/
-.idea/*
 oracle-test/oracle-test.iml
 out
+target/
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+.DS_Store
