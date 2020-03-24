@@ -20,9 +20,9 @@ b)  Payment received – 100 Rs coin*/
 
 class Solution {
   public static void main(String[] args) {
-    int productPrice = 50;
+    int productPrice = 20;
     int[] coins = { 1, 3, 4, 5, 10, 30, 40, 50, 100 };
-    int payment = 100;
+    int payment = 33;
 
     printChangeGiven(coins, productPrice, payment);
   }
@@ -50,15 +50,15 @@ class Solution {
     printCoins(changeCoins, coins);
   }
 
-  private static void printCoins(int changeCoinCount[], int coins[]) {
-    if (changeCoinCount[changeCoinCount.length - 1] == -1) {
+  private static void printCoins(int changeCoins[], int coins[]) {
+    if (changeCoins[changeCoins.length - 1] == -1) {
       System.out.print("No solution is possible");
       return;
     }
-    int start = changeCoinCount.length - 1;
+    int start = changeCoins.length - 1;
     System.out.print("Coins used :");
     while (start != 0) {
-      int j = changeCoinCount[start];
+      int j = changeCoins[start];
       System.out.print(coins[j] + " ");
       start = start - coins[j];
     }

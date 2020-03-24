@@ -9,4 +9,8 @@ public class Node {
         this.data = data;
         this.left = this.right = null;
     }
+
+    @Override public String toString() {
+        return "Node{" + "data=" + data + '}';
+    }
 }

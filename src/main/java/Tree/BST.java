@@ -78,22 +78,19 @@ public class BST extends TreeUtils {
       return true;
     } else {
       if (root.left != null && root.right == null) {
-        return (root.left.data <= root.data) && checkBST(root.left, min,
-            root.data - 1);
+        return (root.left.data <= root.data) && checkBST(root.left, min, root.data - 1);
       } else if (root.right != null && root.left == null) {
-        return (root.right.data >= root.data) && checkBST(root.right,
-            root.data + 1, max);
+        return (root.right.data >= root.data) && checkBST(root.right, root.data + 1, max);
       } else {
-        return (root.data >= root.left.data) && (root.data <= root.right.data)
-            && checkBST(root.left, min, root.data - 1) && checkBST(root.right,
-            root.data + 1, max);
+        return (root.data >= root.left.data) && (root.data <= root.right.data) && checkBST(root.left, min,
+            root.data - 1) && checkBST(root.right, root.data + 1, max);
       }
     }
   }
 
   public static void main(String[] args) {
     BST tree1 = new BST();
-    int[] nodes = { 30, 20, 14, 67, 54, 34, 27, 87, 56, 23, 11 };
+    int[] nodes = { 30, 20, 14, 67, 54, 34, 27, 87, 56, 23, 11, 6, 18, 4, 9, 15, 19 };
     createBST(tree1, nodes);
     System.out.println("Print Inorder...");
     inorder(tree1.root);
@@ -101,6 +98,9 @@ public class BST extends TreeUtils {
     preorder(tree1.root);
     System.out.println("\nPrint Postorder...");
     postorder(tree1.root);
+
+    System.out.println();
+    System.out.println(TreeUtils.findNodesAtDistance(tree1.root, 4, 14));
 
     int delete = 30;
     System.out.printf("\nDeleting...%d", delete);

@@ -3,6 +3,7 @@ package Graph;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 public class Graph {
   int V;
@@ -27,6 +28,7 @@ public class Graph {
       for (Integer v : adjMatrix[i]) {
         System.out.print("->" + v);
       }
+      //System.out.println(adjMatrix[i].stream().map( v -> {return v.toString();}).collect(Collectors.joining("->")));
       System.out.println();
     }
   }
