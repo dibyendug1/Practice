@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class GeneratePowerSet {
   public static void main(String[] args) {
-    ArrayList<Integer> set = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+    ArrayList<Integer> set = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
     ArrayList<ArrayList<Integer>> powerSet = getPowerSet(set, 0);
     System.out.println(powerSet.toString());
 
