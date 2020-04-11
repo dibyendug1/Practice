@@ -3,6 +3,7 @@ package Tree;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 class TreeUtils {
 
@@ -46,6 +47,45 @@ class TreeUtils {
     System.out.print(node.data + " ");
     preorder(node.left);
     preorder(node.right);
+  }
+
+  static void printHierarchy(Node node) {
+    if (node == null) {
+      return;
+    }
+    System.out.println();
+    int indent = 40;
+    System.out.println(String.format("%" + indent + "d", node.data));
+    Queue<Node> queue = new LinkedList<>();
+    queue.add(node);
+    while (!queue.isEmpty()) {
+      Queue<Node> tmp = new LinkedList();
+      tmp.addAll(queue);
+      queue.clear();
+      indent = indent - 11;
+      while (!tmp.isEmpty()) {
+        Node n = tmp.remove();
+        if (n.left != null) {
+
+          System.out.print(String.format("%" + indent + "d", n.left.data));
+          queue.add(n.left);
+        }
+        int tin = 15;
+        if (n.right != null) {
+          System.out.print(String.format("%" + tin + "d", n.right.data));
+          queue.add(n.right);
+        }
+      }
+      System.out.println();
+    }
+
+  }
+
+  private static void printChilds(Node node) {
+    if (node.left != null) {
+      System.out.print("L: " + node.left.data);
+    }
+
   }
 
   Node findPredecessor(Node right, Node max) {
@@ -146,5 +186,17 @@ class TreeUtils {
     }
     findNodesAtDistanceDown(node.left, dist, target, curDist + 1, resultNodes);
     findNodesAtDistanceDown(node.right, dist, target, curDist + 1, resultNodes);
+  }
+
+  protected static Node createTree(int[] arr, int start, int end) {
+    if (end < start) {
+      return null;
+    }
+
+    int mid = (start + end) / 2;
+    Node n = new Node(arr[mid]);
+    n.left = createTree(arr, start, mid - 1);
+    n.right = createTree(arr, mid + 1, end);
+    return n;
   }
 }
