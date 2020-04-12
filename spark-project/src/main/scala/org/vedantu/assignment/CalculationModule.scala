@@ -96,6 +96,7 @@ class CalculationModule(sqlContext: SQLContext, path: String, outputPath: String
       replaceNull(row.get(2)).toString,
       replaceNull(row.get(3)).toString,
       replaceNull(row.get(4)).toString)))
+    pw.close()
   }
 
   def replaceNull(value: Any): Any = {
