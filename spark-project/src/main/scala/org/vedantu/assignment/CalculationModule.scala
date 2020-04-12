@@ -3,7 +3,7 @@ package org.vedantu.assignment
 import java.io.{File, PrintWriter}
 
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.{SQLContext, functions}
+import org.apache.spark.sql.{DataFrame, Dataset, Row, SQLContext, functions}
 import org.apache.spark.sql.functions.{col, _}
 
 /**
@@ -22,10 +22,7 @@ class CalculationModule(sqlContext: SQLContext, path: String, outputPath: String
     // print writer object to write the output in a file
     val pw = new PrintWriter(new File(outputPath + "/question1.txt"))
 
-    val output = df.filter("appnameenc in (1,2)")
-      .groupBy("sessionid")
-      .agg((avg("timestamp") - min("timestamp")).as("average"))
-      .select(col("sessionid"), col("average"))
+    val output: DataFrame = getQuestion1Output
 
     pw.write(String.format("| %20s | %20s |\n", "sessionid", "average in ms"))
     output.collect().foreach(r =>
@@ -33,14 +30,19 @@ class CalculationModule(sqlContext: SQLContext, path: String, outputPath: String
     pw.close()
   }
 
+  private def getQuestion1Output = {
+    val output = df.filter("appnameenc in (1,2)")
+      .groupBy("sessionid")
+      .agg((avg("timestamp") - min("timestamp")).as("average"))
+      .select(col("sessionid"), col("average"))
+    output
+  }
+
   def question2(): Unit = {
     // print writer object to write the output in a file
     val pw = new PrintWriter(new File(outputPath + "/question2.txt"))
 
-    val output = df.filter("region is not null and region <> '-'")
-      .groupBy("region", "calc_userid")
-      .agg(functions.count("calc_userid").as("calc_userid count"))
-      .orderBy("region", "calc_userid")
+    val output: _root_.org.apache.spark.sql.Dataset[_root_.org.apache.spark.sql.Row] = getQuestion2OutPut
 
     pw.write(String.format("| %20s | %20s | %20s |\n", "region", "calc_userid", "userid count"))
     output.collect().foreach(r =>
@@ -48,10 +50,32 @@ class CalculationModule(sqlContext: SQLContext, path: String, outputPath: String
     pw.close()
   }
 
+  private def getQuestion2OutPut = {
+    val output = df.filter("region is not null and region <> '-'")
+      .groupBy("region", "calc_userid")
+      .agg(functions.count("calc_userid").as("calc_userid count"))
+      .orderBy("region", "calc_userid")
+    output
+  }
+
   def question3(): Unit = {
     // print writer object to write the output in a file
     val pw = new PrintWriter(new File(outputPath + "/question3.txt"))
 
+    val output: DataFrame = getQuestion3Output
+
+    pw.write(String.format("%20s | %20s | %20s | %20s | %20s |\n", "calc_userid", "first_action", "first_action_count",
+      "second_action", "second_action_count"))
+    output.collect().foreach(row => pw.write(String.format("%20s | %20s | %20s | %20s | %20s |\n",
+      replaceNull(row.get(0)).toString,
+      replaceNull(row.get(1)).toString,
+      replaceNull(row.get(2)).toString,
+      replaceNull(row.get(3)).toString,
+      replaceNull(row.get(4)).toString)))
+    pw.close()
+  }
+
+  private def getQuestion3Output = {
     // Windowspec to partition based on userid and then sort based on timestamp
     val filterSpec = Window.partitionBy("calc_userid").orderBy(col("timestamp"))
 
@@ -87,16 +111,7 @@ class CalculationModule(sqlContext: SQLContext, path: String, outputPath: String
         col("f.first_action_count").as("first_action_count"),
         col("s.second_action").as("second_action"),
         col("s.second_action_count").as("second_action_count"))
-
-    pw.write(String.format("%20s | %20s | %20s | %20s | %20s |\n", "calc_userid", "first_action", "first_action_count",
-      "second_action", "second_action_count"))
-    output.collect().foreach(row => pw.write(String.format("%20s | %20s | %20s | %20s | %20s |\n",
-      replaceNull(row.get(0)).toString,
-      replaceNull(row.get(1)).toString,
-      replaceNull(row.get(2)).toString,
-      replaceNull(row.get(3)).toString,
-      replaceNull(row.get(4)).toString)))
-    pw.close()
+    output
   }
 
   def replaceNull(value: Any): Any = {
