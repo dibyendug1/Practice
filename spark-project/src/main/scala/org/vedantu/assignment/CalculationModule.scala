@@ -50,7 +50,7 @@ class CalculationModule(sqlContext: SQLContext, path: String, outputPath: String
 
   def question3(): Unit = {
     // print writer object to write the output in a file
-    val pw = new PrintWriter(new File(outputPath + "/question2.txt"))
+    val pw = new PrintWriter(new File(outputPath + "/question3.txt"))
 
     // Windowspec to partition based on userid and then sort based on timestamp
     val filterSpec = Window.partitionBy("calc_userid").orderBy(col("timestamp"))
